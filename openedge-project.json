@@ -1,0 +1,32 @@
+/* Diagnóstico de Conexión */
+IF CONNECTED("sports2000") THEN DO:
+    MESSAGE "¡ÉXITO! Estás conectado a la base de datos." 
+        VIEW-AS ALERT-BOX INFORMATION.
+    
+    /* Prueba de lectura real */
+    FIND FIRST Customer NO-LOCK NO-ERROR.
+    IF AVAILABLE Customer THEN 
+        MESSAGE "Leído cliente: " Customer.Name VIEW-AS ALERT-BOX.
+END.
+ELSE DO:
+    MESSAGE "ERROR: No hay conexión. " SKIP
+            "1. ¿Ejecutaste 'proserve sports2000 -S 12345' en Proenv?" SKIP
+            "2. ¿El JSON tiene el puerto correcto?"
+        VIEW-AS ALERT-BOX ERROR.
+END.
+
+"adapter": {
+    "type": "pasoe",
+    "name": "oepas1",
+    "webApps": [
+      {
+        "name": "ROOT",
+        "services": [
+          {
+            "name": "MiApiRest",
+            "type": "REST"
+          }
+        ]
+      }
+    ]
+  }
